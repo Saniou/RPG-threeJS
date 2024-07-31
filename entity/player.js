@@ -1,10 +1,13 @@
 import { Object3D } from 'three'
-// const SPEED = 3
+import Keyboard from '../control/keyboard'
+import { createRigidBodyEntity } from '../tool/function'
+
+const SPEED = 3
 
 export default class Player extends Object3D {
-//   collider = null
-//   rigidBody = null
-//   ctrl = new Gamepad()
+  collider = null
+  rigidBody = null
+  ctrl = new Keyboard()
 
   constructor(mesh, physic) {
     super()
@@ -14,7 +17,9 @@ export default class Player extends Object3D {
   }
 
   initPhysic(physic) {
-
+    const { rigidBody, collider } = createRigidBodyEntity(this.position, physic)
+    this.rigidBody = rigidBody
+    this.collider = collider
   }
 
   initVisual(mesh) {
@@ -23,20 +28,20 @@ export default class Player extends Object3D {
     this.add(mesh)
   }
 
-//   update() {
-//     this.updatePhysic()
-//     this.updateVisual()
-//   }
+  update() {
+    this.updatePhysic()
+    this.updateVisual()
+  }
 
-//   updatePhysic() {
-//     const x = this.ctrl.x * SPEED
-//     const z = this.ctrl.z * SPEED
-//     const y = this.rigidBody.linvel().y
-//     this.rigidBody.setLinvel({ x, y, z }, true)
-//   }
+  updatePhysic() {
+    const x = this.ctrl.x * SPEED
+    const z = this.ctrl.z * SPEED
+    const y = this.rigidBody.linvel().y
+    this.rigidBody.setLinvel({ x, y, z }, true)
+  }
 
-//   updateVisual() {
-//     this.position.copy(this.rigidBody.translation())
-//   }
+  updateVisual() {
+    this.position.copy(this.rigidBody.translation())
+  }
 
 }
