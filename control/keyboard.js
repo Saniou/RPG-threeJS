@@ -35,15 +35,12 @@ export default class Keyboard {
     }
   }
 
-  get attack() {
-    return this.keys['Space'] || false;
+  get moving() {
+    return this.x !== 0 || this.z !== 0;
   }
 
-  get jump() {
-    return this.keys['KeyJ'] || false;
+  get angle() {
+    return Math.atan2(this.z, this.x)
   }
 
-  get lock() {
-    return this.keys['KeyL'] || false;
-  }
 }

@@ -33,6 +33,28 @@ export function createRigidBodyEntity(position, physic) {
   return { rigidBody, collider }
 }
 
-// export function floor(float, max = 0.2) {
-//   return Math.abs(float) < max ? 0 : float
-// }
+export function floor(float, max = 0.2) {
+  return Math.abs(float) < max ? 0 : float
+}
+
+export function findByName(name, list) {
+  return list.find((a) => name === a.name)
+}
+
+export function browse(object, callback) {
+  if (object.isMesh) callback(object)
+  const children = object.children
+  for (let i = 0; i < children.length; i++) {
+    browse(children[i], callback)
+  }
+}
+
+Math.angle = function angle(x, z) {
+  return Math.atan2(-z, x) + Math.PI / 2
+}
+
+export function range(angle1, angle2) {
+  let angle = ((angle1 - angle2 + Math.PI) % (Math.PI * 2)) - Math.PI
+  angle < -Math.PI ? angle + Math.PI * 2 : angle
+  return angle
+}
