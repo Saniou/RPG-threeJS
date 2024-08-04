@@ -33,6 +33,15 @@ export function createRigidBodyEntity(position, physic) {
   return { rigidBody, collider }
 }
 
+export function createRigidBodyEntityMob(position, physic) {
+  const rigidBodyDesc = RigidBodyDesc.dynamic();
+  rigidBodyDesc.setTranslation(position.x, position.y, position.z);
+  const rigidBody = physic.createRigidBody(rigidBodyDesc);
+  const collider = createColliderBall(0.25, rigidBody, physic);
+  return { rigidBody, collider };
+}
+
+
 export function floor(float, max = 0.2) {
   return Math.abs(float) < max ? 0 : float
 }

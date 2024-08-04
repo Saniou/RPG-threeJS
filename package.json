@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@dimforge/rapier3d-compat": "^0.14.0",
+    "rpg": "file:",
     "three": "^0.167.0"
   }
 }
