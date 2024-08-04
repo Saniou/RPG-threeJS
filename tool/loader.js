@@ -5,12 +5,10 @@ const loaderGlb = new GLTFLoader();
 
 export async function loadWorld(path) {
   const glb = await loaderGlb.loadAsync(path);
-  console.log('GLTF Loaded:', glb);
   const visuals = [];
   const colliders = [];
 
   for (const mesh of glb.scene.children) {
-    console.log('Mesh:', mesh);
     const name = mesh.name;
     if (name.includes('visual')) {
       visuals.push(mesh);
