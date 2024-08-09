@@ -61,7 +61,6 @@ export default class Player extends Object3D {
     this.rigidBody.setLinvel({ x, y, z }, true)
   }
 
-
   updateVisual(dt) {
     this.position.copy(this.rigidBody.translation())
 

@@ -2,10 +2,11 @@ import { Object3D, Vector3 } from 'three';
 import { createRigidBodyEntityMob } from '../tool/function';
 import Animator from './animation';
 
-const FOLLOW_SPEED = 1;
+const FOLLOW_SPEED = 1.2;
 const ATTACK = 'attack';
 const IDLE = 'idle';
 const RUN = 'walk';
+const SPAWN_DISTANCE = 4; 
 
 function range(target, current) {
     let delta = target - current;
@@ -26,7 +27,7 @@ export default class Mob extends Object3D {
         this.initPhysic(physic);
         this.initVisual(mesh);
         this.initAnimation(mesh);
-        this.spawnAwayFromTarget(target, 2);
+        this.spawnAwayFromTarget(target);
     }
 
     initPhysic(physic) {
@@ -47,16 +48,12 @@ export default class Mob extends Object3D {
         this.animator = animator;
     }
 
-    spawnAwayFromTarget(target, distance) {
-        const offset = new Vector3(
-            (Math.random(3, 5) - 0.5) * distance * 2,
-            0,
-            (Math.random() - 0.5) * distance * 2
-        );
+    spawnAwayFromTarget(target) {
+        const offset = new Vector3(SPAWN_DISTANCE, 0, 0);
+        offset.applyAxisAngle(new Vector3(0, 1, 0), Math.floor(2) * Math.PI * 2);
         this.position.copy(target.position.clone().add(offset));
 
-        // Установлюємо висоту моба
-        this.position.y = 0; // Не допускаємо негативні координати
+        this.position.y = 0;
 
         this.rigidBody.setTranslation(this.position, true);
     }
@@ -68,46 +65,25 @@ export default class Mob extends Object3D {
 
     updateFollow(dt) {
         const followDistance = 1;
-        const stopDistance = 0.5; // Відстань, на якій моб зупиняється
-
         const mobPosition = new Vector3().copy(this.rigidBody.translation());
         const playerPosition = new Vector3().copy(this.target.position);
 
-        const distanceToPlayer = mobPosition.distanceTo(playerPosition);
-
-        if (distanceToPlayer > followDistance) {
+        if (mobPosition.distanceTo(playerPosition) > followDistance) {
             const direction = new Vector3().subVectors(playerPosition, mobPosition).normalize();
             const moveDirection = direction.multiplyScalar(FOLLOW_SPEED * dt);
 
-            // Оновлюємо нову позицію моба
             const newPosition = mobPosition.add(moveDirection);
 
-            // Переконуємося, що моб не провалюється
-            newPosition.y = 0; // Не допускаємо негативні координати
+            newPosition.y = 0; 
 
             this.rigidBody.setTranslation(newPosition, true);
             this.position.copy(newPosition);
 
-            // Поворот моба до персонажа
             const targetAngle = Math.atan2(direction.x, direction.z);
             const currentAngle = this.rotation.y;
             const deltaAngle = range(targetAngle, currentAngle);
 
-            // Обмеження кута обертання
-            const rotationSpeed = Math.PI * dt;
-            this.rotation.y += Math.sign(deltaAngle) * Math.min(Math.abs(deltaAngle), rotationSpeed);
-        } else if (distanceToPlayer <= stopDistance) {
-            // Якщо моб досяг зупиненої відстані, зупиняємося
-            this.rigidBody.setTranslation(mobPosition, true);
-            this.position.copy(mobPosition);
-
-            // Поворот моба до персонажа
-            const targetAngle = Math.atan2(playerPosition.x - mobPosition.x, playerPosition.z - mobPosition.z);
-            const currentAngle = this.rotation.y;
-            const deltaAngle = range(targetAngle, currentAngle);
-
-            // Обмеження кута обертання
-            const rotationSpeed = Math.PI * dt;
+            const rotationSpeed = 3 * dt;
             this.rotation.y += Math.sign(deltaAngle) * Math.min(Math.abs(deltaAngle), rotationSpeed);
         }
     }
