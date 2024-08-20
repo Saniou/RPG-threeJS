@@ -1,7 +1,8 @@
 {
   "name": "rpg",
   "scripts": {
-    "dev": "vite"
+    "dev": "vite",
+    "build": "vite build"
   },
   "devDependencies": {
     "vite": "^5.3.5"
@@ -9,6 +10,6 @@
   "dependencies": {
     "@dimforge/rapier3d-compat": "^0.14.0",
     "rpg": "file:",
-    "three": "^0.167.0"
+    "three": "^0.167.1"
   }
 }
