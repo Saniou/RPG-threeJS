@@ -2,6 +2,6 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   build: {
-    target: ['web', 'es2022', 'esnext'],
+    target: ["chrome87", "edge88", "es2020", "firefox78", "safari14"]
   },
 });
