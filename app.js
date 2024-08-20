@@ -9,9 +9,9 @@ import physic from './engine/physics';
 import { loadWorld, loadEntity } from './tool/loader';
 
 async function init() {
-  const assetWorld = await loadWorld('public/world1.glb');
-  const assetPlayer = await loadEntity('public/Persona.glb');
-  const assetPlayer2 = await loadEntity('public/mob1.glb');
+  const assetWorld = await loadWorld('./public/world1.glb');
+  const assetPlayer = await loadEntity('./public/Persona.glb');
+  const assetPlayer2 = await loadEntity('./public/mob1.glb');
 
   const scene = new Scene();
   const world = new World(assetWorld.visuals, assetWorld.colliders, physic);
